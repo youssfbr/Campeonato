@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
 using campeonato.Context;
 using campeonato.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace campeonato.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]/classificacao_geral")]
     public class CampeonatoController : ControllerBase

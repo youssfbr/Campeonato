@@ -1,5 +1,8 @@
 using System;
 using campeonato.Context;
+using campeonato.Helpers;
+using campeonato.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +57,11 @@ namespace campeonato
             services.AddCors();
             services.AddControllers();
 
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
+            services.AddScoped<IUserService, UserService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "campeonato", Version = "v1" });
@@ -80,6 +88,7 @@ namespace campeonato
                 .AllowAnyHeader()
             );
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
