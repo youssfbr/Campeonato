@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using campeonato.Context;
 using campeonato.Entities;
+using campeonato.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,18 +10,18 @@ namespace campeonato.Controllers
     [ApiController]
     [Route("[controller]/classificacao_geral")]
     public class CampeonatoController : ControllerBase
-    {
-        private readonly AppDbContext _context;
+    {        
+        private readonly ICampeonatoService _campeonatoService;
 
-        public CampeonatoController(AppDbContext context)
-        {
-            _context = context;
+        public CampeonatoController(ICampeonatoService campeonatoService)
+        {     
+            _campeonatoService = campeonatoService;
         }
         
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCampeonato(int id)
         {
-            var campeonato = await _context.Campeonatos.FindAsync(id);
+            var campeonato = await _campeonatoService.GetCampeonato(id);
 
             if (campeonato == null) return NotFound();
             
@@ -29,10 +29,9 @@ namespace campeonato.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Campeonato campeonato)
+        public async Task<IActionResult> AddCampeonato(Campeonato campeonato)
         {
-            _context.Campeonatos.Add(campeonato);
-            await _context.SaveChangesAsync();
+            await _campeonatoService.AddCampeonato(campeonato);          
 
             return CreatedAtAction("GetCampeonato", new { id = campeonato.Id }, campeonato);
         }

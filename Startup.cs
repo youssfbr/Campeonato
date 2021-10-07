@@ -2,6 +2,7 @@ using System;
 using campeonato.Context;
 using campeonato.Helpers;
 using campeonato.Services;
+using campeonato.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -61,6 +62,7 @@ namespace campeonato
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICampeonatoService, CampeonatoService>();
 
             services.AddSwaggerGen(c =>
             {
