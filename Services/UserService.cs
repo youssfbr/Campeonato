@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,9 +14,17 @@ namespace campeonato.Services
 
     public class UserService : IUserService
     {        
+        
         private List<User> _users = new List<User>
-        {
-            new User { Id = 1, FirstName = "Test", LastName = "User", Username = "selecao2020", Password = "rubyonrails" }
+        {            
+            new User 
+            { 
+                Id = 1, 
+                FirstName = "Test", 
+                LastName = "User", 
+                Username = Environment.GetEnvironmentVariable("USERNAME"), 
+                Password = Environment.GetEnvironmentVariable("PASSWORD")  
+            }
         };
 
         public async Task<User> Authenticate(string username, string password)
